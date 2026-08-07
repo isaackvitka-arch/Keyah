@@ -4,7 +4,7 @@ let todasLasNoticias = [];
 
 // --- 2. CARGAR EL JSON AL INICIO DE LA APLICACIÓN ---
 
-fetch('noticias.json')
+fetch('Noticias.json')
     .then(respuesta => respuesta.json())
     .then(datos => {
         todasLasNoticias = datos;
@@ -15,8 +15,8 @@ fetch('noticias.json')
 // --- 3. FUNCIÓN PRINCIPAL PARA PINTAR PORTADA (HERO Y GRID) ---
 
 function mostrarNoticias(listaDeNoticias) {
-    const contenedorHero = document.getElementById('hero-noticia');
-    const contenedorGrid = document.getElementById('contenedor-noticias');
+    const contenedorHero = document.getElementById('hero-Noticia');
+    const contenedorGrid = document.getElementById('contenedor-Noticias');
     
     // Nos aseguramos de volver a mostrar el título de últimas noticias si estaba oculto
     document.querySelector('.latest-section h2').style.display = 'block';
