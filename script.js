@@ -4,7 +4,7 @@ let todasLasNoticias = [];
 
 // --- 2. CARGAR EL JSON AL INICIO DE LA APLICACIÓN ---
 
-fetch('noticias.json')
+fetch('/noticias.json')
     .then(respuesta => respuesta.json())
     .then(datos => {
         todasLasNoticias = datos;
