@@ -1,8 +1,4 @@
-// --- 1. VARIABLES GLOBALES ---
-
 let todasLasNoticias = [];
-
-// --- 2. CARGAR EL JSON AL INICIO DE LA APLICACIÓN ---
 
 fetch('noticias.json')
     .then(respuesta => respuesta.json())
@@ -10,18 +6,14 @@ fetch('noticias.json')
         todasLasNoticias = datos;
         mostrarNoticias(todasLasNoticias);
     })
-    .catch(error => console.error('Error cargando las noticias de KEYAH NEWS:', error));
-
-// --- 3. FUNCIÓN PRINCIPAL PARA PINTAR PORTADA (HERO Y GRID) ---
+    .catch(error => console.error('Error cargando las noticias:', error));
 
 function mostrarNoticias(listaDeNoticias) {
     const contenedorHero = document.getElementById('hero-noticia');
     const contenedorGrid = document.getElementById('contenedor-noticias');
     
-    // Nos aseguramos de volver a mostrar el título de últimas noticias si estaba oculto
     document.querySelector('.latest-section h2').style.display = 'block';
     
-    // Limpiamos los contenedores anteriores
     contenedorHero.innerHTML = '';
     contenedorGrid.innerHTML = '';
 
@@ -30,7 +22,6 @@ function mostrarNoticias(listaDeNoticias) {
         return;
     }
 
-    // --- MANEJO DINÁMICO DEL HERO ---
     const noticiaPrincipal = listaDeNoticias[0];
     contenedorHero.innerHTML = `
         <div class="hero-card" style="cursor: pointer;">
@@ -46,12 +37,10 @@ function mostrarNoticias(listaDeNoticias) {
         </div>
     `;
 
-    // Clic en el Hero para ver artículo completo
     contenedorHero.querySelector('.hero-card').addEventListener('click', () => {
         verArticuloCompleto(noticiaPrincipal.id);
     });
 
-    // --- MANEJO DE LAS CASILLAS RESTANTES (.slice) ---
     const noticiasRestantes = listaDeNoticias.slice(1);
 
     noticiasRestantes.forEach(noticia => {
@@ -66,7 +55,6 @@ function mostrarNoticias(listaDeNoticias) {
             <p>${noticia.resumen}</p>
         `;
 
-        // Clic en tarjeta secundaria
         tarjeta.addEventListener('click', () => {
             verArticuloCompleto(noticia.id);
         });
@@ -74,8 +62,6 @@ function mostrarNoticias(listaDeNoticias) {
         contenedorGrid.appendChild(tarjeta);
     });
 }
-
-// --- 4. VISTA DE LECTURA DE ARTÍCULO COMPLETO (SPA) ---
 
 function verArticuloCompleto(id) {
     const contenedorHero = document.getElementById('hero-noticia');
@@ -85,11 +71,9 @@ function verArticuloCompleto(id) {
     const noticia = todasLasNoticias.find(item => item.id === id);
 
     if (noticia) {
-        // Limpiamos y ocultamos el Hero y el título de la sección secundaria
         contenedorHero.innerHTML = '';
         tituloSeccion.style.display = 'none';
 
-        // Generar dinámicamente los bloques alternados de texto e imagen
         let bloquesHTML = '';
         if (noticia.contenido && Array.isArray(noticia.contenido)) {
             noticia.contenido.forEach(bloque => {
@@ -104,12 +88,8 @@ function verArticuloCompleto(id) {
                     `;
                 }
             });
-        } else {
-            // Compatibilidad por si alguna noticia usa el formato antiguo de texto plano
-            bloquesHTML = `<p>${noticia.texto || ''}</p>`;
         }
 
-        // Reemplazamos las casillas del Grid por la estructura de lectura del artículo
         contenedorGrid.innerHTML = `
             <article class="articulo-completo">
                 <button class="btn-volver" id="btn-regresar">← Volver a últimas noticias</button>
@@ -128,23 +108,20 @@ function verArticuloCompleto(id) {
             </article>
         `;
 
-        // Lógica para el botón regresar
         document.getElementById('btn-regresar').addEventListener('click', () => {
             mostrarNoticias(todasLasNoticias);
         });
     }
 }
 
-// --- 5. LÓGICA DE FILTRADO DE CATEGORÍAS (MENÚ) ---
-
 const enlacesMenu = document.querySelectorAll('.main-nav a');
 
 enlacesMenu.forEach(enlace => {
     enlace.addEventListener('click', (evento) => {
         evento.preventDefault(); 
-        const categoriaSeleccionada = enlace.textContent;
+        const categoriaSeleccionada = enlace.textContent.trim();
 
-        if (categoriaSeleccionada === 'Inicio') {
+        if (categoriaSeleccionada.toLowerCase() === 'inicio') {
             mostrarNoticias(todasLasNoticias);
         } else {
             const noticiasFiltradas = todasLasNoticias.filter(noticia => 
@@ -153,25 +130,13 @@ enlacesMenu.forEach(enlace => {
             mostrarNoticias(noticiasFiltradas);
         }
 
-        // Si está en celular, cerramos el menú hamburguesa automáticamente al dar clic
         document.getElementById('main-navigation').classList.remove('active');
-        const menuBtn = document.getElementById('menu-btn');
-        if (menuBtn.textContent === '✕') {
-            menuBtn.textContent = '☰';
-        }
     });
 });
-
-// --- 6. INTERACCIÓN DEL MENÚ HAMBURGUESA (MÓVILES) ---
 
 const menuBtn = document.getElementById('menu-btn');
 const mainNav = document.getElementById('main-navigation');
 
 menuBtn.addEventListener('click', () => {
     mainNav.classList.toggle('active');
-    if (mainNav.classList.contains('active')) {
-        menuBtn.textContent = '✕';
-    } else {
-        menuBtn.textContent = '☰';
-    }
 });
