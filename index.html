@@ -1,139 +1,128 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KEYAH NEWS | Portal de Noticias Profesional</title>
-<!-- Vinculación del archivo de estilos CSS -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KEYAH NEWS | Portal de Noticias Profesional</title>
+    <!-- Vinculación de fuentes e icónos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- ==========================================================================
-1. ENCABEZADO PRINCIPAL (HEADER)
-========================================================================== -->
-<header class="main-header">
-<div class="header-container">
+    <!-- ==========================================================================
+    1. ENCABEZADO PRINCIPAL (HEADER)
+    ========================================================================== -->
+    <header class="main-header">
+        <div class="header-container">
 
-<div class="header-left">
-    <div class="logo-container">
-        <a href="index.html">
-            <img src="img/keyah-logo.png" alt="Logo de KEYAH NEWS" class="logo">
-        </a>
-    </div>
-</div>
+            <div class="header-left">
+                <div class="logo-container">
+                    <a href="index.html">
+                        <img src="img/keyah-logo.png" alt="Logo de KEYAH NEWS" class="logo">
+                    </a>
+                </div>
+            </div>
 
+            <!-- Botón de menú hamburguesa para móviles -->
+            <button class="menu-toggle" id="menu-btn" aria-label="Abrir menú">☰</button>
 
+            <!-- Menú de navegación por categorías -->
+            <nav class="main-nav" id="main-navigation">
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#musica">Musica</a></li>
+                    <li><a href="#arte">Arte</a></li>
+                    <li><a href="#conciertos">Conciertos</a></li>
+                    <li><a href="#obras">Obras</a></li>
+                </ul>
+            </nav>
 
-<!-- Botón de menú hamburguesa para móviles -->
-<button class="menu-toggle" id="menu-btn" aria-label="Abrir menú">☰</button>
+        </div>
+    </header>
 
-<!-- Menú de navegación por categorías -->
-<nav class="main-nav" id="main-navigation">
-<ul>
-<li><a href="#inicio">Inicio</a></li>
-<li><a href="#Musica">Musica</a></li>
-<li><a href="#Arte">Arte</a></li>
-<li><a href="#Conciertos">Conciertos</a></li>
-<li><a href="#Obras">Obras</a></li>
-</ul>
-</nav>
+    <!-- ==========================================================================
+    HERO DE PRESENTACIÓN
+    ========================================================================== -->
+    <section class="hero-presentacion">
+        <div class="hero-overlay-container">
+            <img src="img/periodico-silla.jpg" alt="Fondo KEYAH NEWS" class="hero-bg-img">
+            <div class="hero-text-overlay">
+                <h1>Bienvenido a <span class="text-orange">KEYAH NEWS</span></h1>
+                <p>En donde daremos exposición a talentos nuevos y emergentes...</p>
+                <a href="#contenedor-noticias" class="btn-explorar">Explorar noticias</a>
+            </div>
+        </div>
+    </section>
 
+    <!-- ==========================================================================
+    2. CONTENEDOR PRINCIPAL
+    ========================================================================== -->
+    <main class="main-content">
 
+        <!-- Sección para la noticia principal dinámicamente inyectada -->
+        <section id="hero-noticia" class="hero-section">
+            <!-- JavaScript inyectará el Hero aquí -->
+        </section>
 
+        <!-- Sección de la cuadrícula de últimas noticias -->
+        <section class="latest-section">
+            <h2>Últimas Noticias</h2>
 
-</div>
-</header>
+            <!-- Contenedor donde se renderizan las casillas secundarias -->
+            <div id="contenedor-noticias" class="news-grid">
+                <!-- Las tarjetas secundarias aparecerán aquí dinámicamente -->
+            </div>
+        </section>
 
-<!--contenedor de presentacionen seccion hero-->
+    </main>
 
-<section class="hero-presentacion">
-<div class="hero-overlay-container">
-<!-- Esta imagen actuará como fondo -->
-<img src="img/periodico-silla.jpg" alt="Fondo" class="hero-bg-img">
+    <!-- ==========================================================================
+    3. PIE DE PÁGINA (FOOTER)
+    ========================================================================== -->
+    <footer class="main-footer">
+        <div class="footer-container">
 
-<!-- Este contenedor tendrá el texto encima -->
-<div class="hero-text-overlay">
-<h1>Bienvenido a <span class="text-orange">KEYAH NEWS</span></h1>
-<p>En donde daremos exposición a talentos nuevos y emergentes...</p>
-<a href="#contenedor-noticias" class="btn-explorar">Explorar noticias</a>
-</div>
-</div>
-</section>
+            <!-- Columna 1: Sobre Nosotros -->
+            <div class="footer-column">
+                <h3>KEYAH NEWS</h3>
+                <p>Promovemos el talento y la cultura, damos visibilidad a artistas, creadores y eventos que contribuyen al desarrollo cultural y al fortalecimiento de nuestra identidad.</p>
+            </div>
 
-<!-- ==========================================================================
-2. CONTENEDOR PRINCIPAL (MAIN COMIENZA AQUÍ)
-========================================================================== -->
-<main class="main-content">
+            <!-- Columna 2: Enlaces Rápidos -->
+            <div class="footer-column">
+                <h3>Categorías</h3>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#musica">Musica</a></li>
+                    <li><a href="#arte">Arte</a></li>
+                    <li><a href="#conciertos">Conciertos</a></li>
+                    <li><a href="#obras">Obras</a></li>
+                </ul>
+            </div>
 
-<!-- Sección para la noticia principal (Hero) -->
-<section id="hero-noticia" class="hero-section">
-<!-- JavaScript inyectará el Hero aquí de forma dinámica -->
-</section>
+            <!-- Columna 3: Redes Sociales y Contacto -->
+            <div class="footer-column">
+                <h3>Síguenos</h3>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook">Facebook</a>
+                    <a href="#" aria-label="X (Twitter)">X / Twitter</a>
+                    <a href="#" aria-label="Instagram">Instagram</a>
+                </div>
+                <p class="footer-contact">Contacto: contacto@keyahnews.com</p>
+            </div>
 
-<!-- Sección de la cuadrícula de últimas noticias -->
-<section class="latest-section">
-<h2>Últimas Noticias</h2>
+        </div>
 
-<!-- Contenedor donde se renderizan las casillas secundarias -->
-<div id="contenedor-noticias" class="news-grid">
-<!-- Las tarjetas secundarias aparecerán aquí dinámicamente -->
-</div>
-</section>
+        <!-- Barra inferior de Derechos de Autor -->
+        <div class="footer-bottom">
+            <p>&copy; 2026 KEYAH NEWS. Todos los derechos reservados.</p>
+        </div>
+    </footer>
 
-</main> <!-- MAIN CIERRA AQUÍ DE FORMA CORRECTA -->
-
-
-
-<!-- ==========================================================================
-3. PIE DE PÁGINA (FOOTER QUEDA AFUERA Y ABAJO)
-========================================================================== -->
-<footer class="main-footer">
-<div class="footer-container">
-
-<!-- Columna 1: Sobre Nosotros -->
-<div class="footer-column">
-<h3>KEYAH NEWS</h3>
-<p>Promovemos el talento y la cultura, Damos visibilidad a artistas, creadores y eventos que contribuyen al desarrollo cultural y al fortalecimiento de nuestra identidad.</p>
-</div>
-
-<!-- Columna 2: Enlaces Rápidos -->
-<div class="footer-column">
-<h3>Categorías</h3>
-<ul>
-<li><a href="#Inicio">Inicio</a></li>
-<li><a href="#Musica">Musica</a></li>
-<li><a href="#Arte">Arte</a></li>
-<li><a href="#Conciertos">Conciertos</a></li>
-<li><a href="#Obras">Obras</a></li>
-</ul>
-</div>
-
-<!-- Columna 3: Redes Sociales / Contacto -->
-<div class="footer-column">
-<h3>Síguenos</h3>
-<div class="social-links">
-<a href="#" aria-label="Facebook">Facebook</a>
-<a href="#" aria-label="X (Twitter)">X / Twitter</a>
-<a href="#" aria-label="Instagram">Instagram</a>
-</div>
-<p class="footer-contact">Contacto: contacto@keyahnews.com</p>
-</div>
-
-</div>
-
-<!-- Barra inferior de Derechos de Autor -->
-<div class="footer-bottom">
-<p>&copy; 2026 KEYAH NEWS. Todos los derechos reservados.</p>
-</div>
-</footer>
-
-<!-- Vinculación del archivo JavaScript -->
-<script src="script.js"></script>
+    <!-- Vinculación del archivo JavaScript -->
+    <script src="script.js"></script>
 </body>
 </html>
-
-

@@ -1,28 +1,42 @@
 // --- 1. VARIABLES GLOBALES ---
-
 let todasLasNoticias = [];
 
-// --- 2. CARGAR EL JSON AL INICIO DE LA APLICACIÓN ---
+// --- 2. ESPERAR A QUE EL DOM ESTÉ LISTO ANTES DE EJECUTAR CUALQUIER LÓGICA ---
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // Cargar JSON con RUTA RELATIVA (Obligatorio para GitHub Pages)
+    fetch('./noticias.json')
+        .then(respuesta => {
+            if (!respuesta.ok) {
+                throw new Error(`Error HTTP: ${respuesta.status}`);
+            }
+            return respuesta.json();
+        })
+        .then(datos => {
+            todasLasNoticias = datos;
+            mostrarNoticias(todasLasNoticias);
+        })
+        .catch(error => console.error('Error cargando las noticias de KEYAH NEWS:', error));
 
-fetch('noticias.json')
-    .then(respuesta => respuesta.json())
-    .then(datos => {
-        todasLasNoticias = datos;
-        mostrarNoticias(todasLasNoticias);
-    })
-    .catch(error => console.error('Error cargando las noticias de KEYAH NEWS:', error));
+    // Inicializar menú hamburguesa y filtros
+    inicializarMenu();
+});
 
 // --- 3. FUNCIÓN PRINCIPAL PARA PINTAR PORTADA (HERO Y GRID) ---
-
 function mostrarNoticias(listaDeNoticias) {
     const contenedorHero = document.getElementById('hero-noticia');
     const contenedorGrid = document.getElementById('contenedor-noticias');
+    const tituloSeccion = document.querySelector('.latest-section h2');
     
-    // Nos aseguramos de volver a mostrar el título de últimas noticias si estaba oculto
-    document.querySelector('.latest-section h2').style.display = 'block';
+    // Mostramos de nuevo el título "Últimas Noticias"
+    if (tituloSeccion) {
+        tituloSeccion.style.display = 'block';
+    }
     
+    if (!contenedorGrid) return;
+
     // Limpiamos los contenedores anteriores
-    contenedorHero.innerHTML = '';
+    if (contenedorHero) contenedorHero.innerHTML = '';
     contenedorGrid.innerHTML = '';
 
     if (listaDeNoticias.length === 0) {
@@ -31,28 +45,33 @@ function mostrarNoticias(listaDeNoticias) {
     }
 
     // --- MANEJO DINÁMICO DEL HERO ---
-    const noticiaPrincipal = listaDeNoticias[0];
-    contenedorHero.innerHTML = `
-        <div class="hero-card" style="cursor: pointer;">
-            <div class="hero-image-wrapper">
-                <img src="${noticiaPrincipal.imagen}" alt="${noticiaPrincipal.titulo}">
+    if (contenedorHero) {
+        const noticiaPrincipal = listaDeNoticias[0];
+        contenedorHero.innerHTML = `
+            <div class="hero-card" style="cursor: pointer;">
+                <div class="hero-image-wrapper">
+                    <img src="${noticiaPrincipal.imagen}" alt="${noticiaPrincipal.titulo}">
+                </div>
+                <div class="hero-content">
+                    <span class="badge badge-hero">${noticiaPrincipal.categoria}</span>
+                    <h1>${noticiaPrincipal.titulo}</h1>
+                    <p>${noticiaPrincipal.resumen}</p>
+                    <span class="hero-read-more">Leer artículo completo →</span>
+                </div>
             </div>
-            <div class="hero-content">
-                <span class="badge badge-hero">${noticiaPrincipal.categoria}</span>
-                <h1>${noticiaPrincipal.titulo}</h1>
-                <p>${noticiaPrincipal.resumen}</p>
-                <span class="hero-read-more">Leer artículo completo →</span>
-            </div>
-        </div>
-    `;
+        `;
 
-    // Clic en el Hero para ver artículo completo
-    contenedorHero.querySelector('.hero-card').addEventListener('click', () => {
-        verArticuloCompleto(noticiaPrincipal.id);
-    });
+        // Clic en el Hero para ver artículo completo
+        const tarjetaHero = contenedorHero.querySelector('.hero-card');
+        if (tarjetaHero) {
+            tarjetaHero.addEventListener('click', () => {
+                verArticuloCompleto(noticiaPrincipal.id);
+            });
+        }
+    }
 
     // --- MANEJO DE LAS CASILLAS RESTANTES (.slice) ---
-    const noticiasRestantes = listaDeNoticias.slice(1);
+    const noticiasRestantes = contenedorHero ? listaDeNoticias.slice(1) : listaDeNoticias;
 
     noticiasRestantes.forEach(noticia => {
         const tarjeta = document.createElement('article');
@@ -76,7 +95,6 @@ function mostrarNoticias(listaDeNoticias) {
 }
 
 // --- 4. VISTA DE LECTURA DE ARTÍCULO COMPLETO (SPA) ---
-
 function verArticuloCompleto(id) {
     const contenedorHero = document.getElementById('hero-noticia');
     const contenedorGrid = document.getElementById('contenedor-noticias');
@@ -84,12 +102,12 @@ function verArticuloCompleto(id) {
     
     const noticia = todasLasNoticias.find(item => item.id === id);
 
-    if (noticia) {
-        // Limpiamos y ocultamos el Hero y el título de la sección secundaria
-        contenedorHero.innerHTML = '';
-        tituloSeccion.style.display = 'none';
+    if (noticia && contenedorGrid) {
+        // Ocultamos el Hero y el título "Últimas Noticias"
+        if (contenedorHero) contenedorHero.innerHTML = '';
+        if (tituloSeccion) tituloSeccion.style.display = 'none';
 
-        // Generar dinámicamente los bloques alternados de texto e imagen
+        // Generar bloques alternados de texto e imagen
         let bloquesHTML = '';
         if (noticia.contenido && Array.isArray(noticia.contenido)) {
             noticia.contenido.forEach(bloque => {
@@ -105,11 +123,10 @@ function verArticuloCompleto(id) {
                 }
             });
         } else {
-            // Compatibilidad por si alguna noticia usa el formato antiguo de texto plano
             bloquesHTML = `<p>${noticia.texto || ''}</p>`;
         }
 
-        // Reemplazamos las casillas del Grid por la estructura de lectura del artículo
+        // Reemplazamos el Grid por la vista de lectura
         contenedorGrid.innerHTML = `
             <article class="articulo-completo">
                 <button class="btn-volver" id="btn-regresar">← Volver a últimas noticias</button>
@@ -128,50 +145,61 @@ function verArticuloCompleto(id) {
             </article>
         `;
 
-        // Lógica para el botón regresar
-        document.getElementById('btn-regresar').addEventListener('click', () => {
-            mostrarNoticias(todasLasNoticias);
-        });
+        // Botón regresar
+        const btnRegresar = document.getElementById('btn-regresar');
+        if (btnRegresar) {
+            btnRegresar.addEventListener('click', () => {
+                mostrarNoticias(todasLasNoticias);
+            });
+        }
+
+        // Scroll al inicio para leer la nota
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }
 
-// --- 5. LÓGICA DE FILTRADO DE CATEGORÍAS (MENÚ) ---
+// --- 5. LÓGICA DE MENÚ Y FILTRADO (COMPATIBLE CON HEADER Y FOOTER) ---
+function inicializarMenu() {
+    // Seleccionar enlaces tanto del Header como del Footer
+    const enlacesCategorias = document.querySelectorAll('.main-nav a, .footer-column a[href^="#"]');
+    const menuBtn = document.getElementById('menu-btn');
+    const mainNav = document.getElementById('main-navigation');
 
-const enlacesMenu = document.querySelectorAll('.main-nav a');
+    enlacesCategorias.forEach(enlace => {
+        enlace.addEventListener('click', (evento) => {
+            const categoriaSeleccionada = enlace.textContent.trim();
 
-enlacesMenu.forEach(enlace => {
-    enlace.addEventListener('click', (evento) => {
-        evento.preventDefault(); 
-        const categoriaSeleccionada = enlace.textContent;
+            // Si es un enlace a categoría de noticias, prevenimos el salto abrupto de ancla
+            if (['Inicio', 'Musica', 'Música', 'Arte', 'Conciertos', 'Obras'].includes(categoriaSeleccionada)) {
+                evento.preventDefault();
 
-        if (categoriaSeleccionada === 'Inicio') {
-            mostrarNoticias(todasLasNoticias);
-        } else {
-            const noticiasFiltradas = todasLasNoticias.filter(noticia => 
-                noticia.categoria.toLowerCase() === categoriaSeleccionada.toLowerCase()
-            );
-            mostrarNoticias(noticiasFiltradas);
-        }
+                if (categoriaSeleccionada === 'Inicio') {
+                    mostrarNoticias(todasLasNoticias);
+                } else {
+                    const noticiasFiltradas = todasLasNoticias.filter(noticia => 
+                        noticia.categoria.toLowerCase() === categoriaSeleccionada.toLowerCase()
+                    );
+                    mostrarNoticias(noticiasFiltradas);
+                }
 
-        // Si está en celular, cerramos el menú hamburguesa automáticamente al dar clic
-        document.getElementById('main-navigation').classList.remove('active');
-        const menuBtn = document.getElementById('menu-btn');
-        if (menuBtn.textContent === '✕') {
-            menuBtn.textContent = '☰';
-        }
+                // Cerrar menú móvil
+                if (mainNav) mainNav.classList.remove('active');
+                if (menuBtn) menuBtn.textContent = '☰';
+                
+                // Hacer scroll suave hacia la sección de noticias
+                const seccionMain = document.querySelector('.main-content');
+                if (seccionMain) {
+                    seccionMain.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
     });
-});
 
-// --- 6. INTERACCIÓN DEL MENÚ HAMBURGUESA (MÓVILES) ---
-
-const menuBtn = document.getElementById('menu-btn');
-const mainNav = document.getElementById('main-navigation');
-
-menuBtn.addEventListener('click', () => {
-    mainNav.classList.toggle('active');
-    if (mainNav.classList.contains('active')) {
-        menuBtn.textContent = '✕';
-    } else {
-        menuBtn.textContent = '☰';
+    // Menú Hamburguesa en Móviles
+    if (menuBtn && mainNav) {
+        menuBtn.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            menuBtn.textContent = mainNav.classList.contains('active') ? '✕' : '☰';
+        });
     }
-});
+}
