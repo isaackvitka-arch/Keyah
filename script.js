@@ -10,7 +10,7 @@ fetch('Noticias.json')
         todasLasNoticias = datos;
         mostrarNoticias(todasLasNoticias);
     })
-    .catch(error => console.error('Error cargando las noticias de KEYAH NEWS:', error));
+    .catch(error => console.error('Error cargando las Noticias de KEYAH NEWS:', error));
 
 // --- 3. FUNCIÓN PRINCIPAL PARA PINTAR PORTADA (HERO Y GRID) ---
 
