@@ -1,14 +1,14 @@
 // --- 1. VARIABLES GLOBALES ---
 
-let todasLasnoticias = [];
+let todasLasNoticias = [];
 
 // --- 2. CARGAR EL JSON AL INICIO DE LA APLICACIÓN ---
 
 fetch('noticias.json')
     .then(respuesta => respuesta.json())
     .then(datos => {
-        todasLasnoticias = datos;
-        mostrarNoticias(todasLasnoticias);
+        todasLasNoticias = datos;
+        mostrarNoticias(todasLasNoticias);
     })
     .catch(error => console.error('Error cargando las noticias de KEYAH NEWS:', error));
 
