@@ -4,19 +4,19 @@ let todasLasNoticias = [];
 
 // --- 2. CARGAR EL JSON AL INICIO DE LA APLICACIÓN ---
 
-fetch('Noticias.json')
+fetch('/noticias.json')
     .then(respuesta => respuesta.json())
     .then(datos => {
         todasLasNoticias = datos;
         mostrarNoticias(todasLasNoticias);
     })
-    .catch(error => console.error('Error cargando las Noticias de KEYAH NEWS:', error));
+    .catch(error => console.error('Error cargando las noticias de KEYAH NEWS:', error));
 
 // --- 3. FUNCIÓN PRINCIPAL PARA PINTAR PORTADA (HERO Y GRID) ---
 
 function mostrarNoticias(listaDeNoticias) {
-    const contenedorHero = document.getElementById('hero-Noticia');
-    const contenedorGrid = document.getElementById('contenedor-Noticias');
+    const contenedorHero = document.getElementById('hero-noticia');
+    const contenedorGrid = document.getElementById('contenedor-noticias');
     
     // Nos aseguramos de volver a mostrar el título de últimas noticias si estaba oculto
     document.querySelector('.latest-section h2').style.display = 'block';
