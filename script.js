@@ -22,12 +22,25 @@ document.addEventListener('DOMContentLoaded', () => {
     inicializarMenu();
 });
 
+// --- HELPER: OCULTAR O MOSTRAR EL HERO DE PRESENTACIÓN ---
+function alternarHeroPresentacion(mostrar) {
+    const heroPresentacion = document.querySelector('.hero-presentacion');
+    if (heroPresentacion) {
+        heroPresentacion.style.display = mostrar ? 'block' : 'none';
+    }
+}
+
 // --- 3. FUNCIÓN PRINCIPAL PARA PINTAR PORTADA (HERO Y GRID) ---
 function mostrarNoticias(listaDeNoticias) {
     const contenedorHero = document.getElementById('hero-noticia');
     const contenedorGrid = document.getElementById('contenedor-noticias');
     const tituloSeccion = document.querySelector('.latest-section h2');
     
+    // Muestra el Hero de presentación únicamente cuando se visualizan TODAS las noticias (Vista Inicio)
+    // Si la lista está filtrada por alguna categoría, lo oculta.
+    const esInicioCompleto = listaDeNoticias.length === todasLasNoticias.length;
+    alternarHeroPresentacion(esInicioCompleto);
+
     // Mostramos de nuevo el título "Últimas Noticias"
     if (tituloSeccion) {
         tituloSeccion.style.display = 'block';
@@ -44,7 +57,7 @@ function mostrarNoticias(listaDeNoticias) {
         return;
     }
 
-    // --- MANEJO DINÁMICO DEL HERO ---
+    // --- MANEJO DINÁMICO DEL HERO DE NOTICIA PRINCIPAL ---
     if (contenedorHero) {
         const noticiaPrincipal = listaDeNoticias[0];
         contenedorHero.innerHTML = `
@@ -100,10 +113,13 @@ function verArticuloCompleto(id) {
     const contenedorGrid = document.getElementById('contenedor-noticias');
     const tituloSeccion = document.querySelector('.latest-section h2');
     
+    // Ocultar el Hero de presentación al entrar al detalle de cualquier noticia
+    alternarHeroPresentacion(false);
+
     const noticia = todasLasNoticias.find(item => item.id === id);
 
     if (noticia && contenedorGrid) {
-        // Ocultamos el Hero y el título "Últimas Noticias"
+        // Ocultamos el Hero dinámico de la lista y el título "Últimas Noticias"
         if (contenedorHero) contenedorHero.innerHTML = '';
         if (tituloSeccion) tituloSeccion.style.display = 'none';
 
@@ -160,7 +176,6 @@ function verArticuloCompleto(id) {
 
 // --- 5. LÓGICA DE MENÚ Y FILTRADO (COMPATIBLE CON HEADER Y FOOTER) ---
 function inicializarMenu() {
-    // Seleccionar enlaces tanto del Header como del Footer
     const enlacesCategorias = document.querySelectorAll('.main-nav a, .footer-column a[href^="#"]');
     const menuBtn = document.getElementById('menu-btn');
     const mainNav = document.getElementById('main-navigation');
@@ -169,7 +184,6 @@ function inicializarMenu() {
         enlace.addEventListener('click', (evento) => {
             const categoriaSeleccionada = enlace.textContent.trim();
 
-            // Si es un enlace a categoría de noticias, prevenimos el salto abrupto de ancla
             if (['Inicio', 'Musica', 'Música', 'Arte', 'Conciertos', 'Obras'].includes(categoriaSeleccionada)) {
                 evento.preventDefault();
 
