@@ -105,7 +105,7 @@
         "titulo": "El universo visual de Emma Steinkraus: un archivo vivo entre naturaleza y memoria.",
         "categoria": "Arte",
         "resumen": "Emma Steinkraus reinventa la pintura contemporánea al transformar la ecología, la diversidad y el rescate de la memoria histórica en un deslumbrante archivo vivol.",
-        "imagen": "img/", 
+        "imagen": "img/emma-arte.jpg", 
         "autor": "Ali Gasga",
         "fecha": "11 de Agosto 2026", 
         "contenido": [
@@ -115,7 +115,7 @@
             },
             {
                 "tipo": "imagen",
-                "valor": "img/",
+                "valor": "img/emma-jardin.jpg",
                 "pie": "Obra jardin secreto  (Foto: Creditos. / Redes oficiales Emma Steinkraus ."
             },
             {
